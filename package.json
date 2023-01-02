@@ -1,0 +1,26 @@
+{
+  "name": "employee-cms",
+  "description": "Week 12, Employee Content Management System with MySQL, Inquirer and Node.JS",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jae-as/employee-cms.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jae-as/employee-cms/issues"
+  },
+  "homepage": "https://github.com/Jae-as/employee-cms#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.5",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.28.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
