@@ -1,6 +1,12 @@
 const { Model, DataTypes} = require('sequelize');
 class Deparment extends Model{}
 
+// CREATE TABLE departments (
+//     department_id INT(4) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+//     department_name VARCHAR(50) NOT NULL
+// );
+
+
 Deparment.init(
 {
     department_id: {
