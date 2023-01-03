@@ -32,6 +32,14 @@ Role.init(
                 model: 'department',
                 key: 'department_id'
             }
+        },
+        department_name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: 'department',
+                key: 'department_name'
+            }
         }
     },{    
         sequelize,

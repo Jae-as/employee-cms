@@ -35,12 +35,20 @@ Employee.init(
                 model: 'role',
                 key: 'role_id'
             }
+        },        
+        title: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: 'role',
+                key: 'title'
+            }
         },
         manager_id: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'orgchart',
-                key: 'manager_id'
+                key: 'employee_id'
             }
         }
     

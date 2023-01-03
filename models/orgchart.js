@@ -9,14 +9,43 @@ class Orgchart extends Model{}
 //     FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 // );
 
-// Orgchart.init{
-//     {
+Orgchart.init (
+    {
+        managerflag: {
+            type: DataTypes.BOOLEAN,
 
-//     },{
-//         sequelize,
-//         timestamps: false,
-//         freezeTableName: true,
-//         underscored: true,
-//         modelName: 'orgchart'
-//     }
-// }
+        },
+        manager_firstname: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: 'employee',
+                key: 'employee_firstname'
+            }
+        },
+        manager_lasstname: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            references: {
+                model: 'employee',
+                key: 'employee_lastname'
+            }
+        },
+        employee_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'employee',
+                key: 'employee_id'
+            }
+        }
+    
+    },
+    {
+        sequelize,
+        timestamps: false,
+        freezeTableName: true,
+        underscored: true,
+        modelName: 'employee'
+    });
+
+    module.exports = Orgchart;
