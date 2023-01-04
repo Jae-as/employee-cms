@@ -1,4 +1,6 @@
 const { Model, DataTypes} = require('sequelize');
+const sequelize = require('../config/connection');
+
 class Orgchart extends Model{}
 
 // CREATE TABLE orgchart (

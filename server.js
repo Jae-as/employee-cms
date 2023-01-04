@@ -3,9 +3,10 @@ const mysql = require("mysql2");
 const inquirer = require("inquirer");
 const table = require("console.table");
 const sequelize = require("sequelize");
+const express = require("express");
 const app = express();
-const { Department, Role, Employee, Orgchart } = require("./models");
-const { init } = require("./models/employee");
+// const { Department, Role, Employee, Orgchart } = require("./models");
+// const { init } = require("./models/employee");
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
@@ -14,7 +15,7 @@ app.use(express.json());
 // Connect to database
 const db = mysql.createConnection(
   {
-    host: "localhost",
+    host: "127.0.0.1",
     // MySQL username,
     user: "root",
     // TODO: Add MySQL password here
@@ -22,9 +23,12 @@ const db = mysql.createConnection(
     database: "company_db",
   },
   console.log(`Connected to the company_db database.`)
+  
 );
 
-const manageEmployees = () => {
+manageEmployees();
+
+function manageEmployees() {
   inquirer
     .prompt([
       {
@@ -51,7 +55,7 @@ const manageEmployees = () => {
     ])
 
     .then((response) => {
-      const { response } = response;
+    console.log(response)
 
       if (response === "View All Departments") {
         viewDepartmens();
@@ -97,28 +101,28 @@ const manageEmployees = () => {
     });
 };
 
-viewDepartmens = () => {
+function viewDepartmens() {
   console.log("==========View All Departments==========");
   const allDepartments = Department.findAll({raw:true})
   console.table(allDepartments);
   init();
 };
 
-viewRoles = () => {
+function viewRoles() {
   console.log("==========View All Roles==========");
   const allRoles = Role.findAll({raw:true})
   console.table(allRoles);
   init();
 };
 
-viewEmployees = () => {
+function viewEmployees() {
   console.log("==========View All Employees==========");
   const allEmployees = Employee.findAll({raw:true})
   console.table(allEmployees);
   init();
 };
 
-addDepartment = () => {
+function addDepartment() {
   console.log("==========Add a Department==========");
 
   const newDepartment = inquirer
@@ -152,7 +156,7 @@ addDepartment = () => {
     });
 };
 
-addRole = () => {
+function addRole() {
   console.log("==========Add a Role==========");
 
   const departmentlist = Department.findAll({ raw: true });
@@ -198,7 +202,7 @@ addRole = () => {
     });
 };
 
-addEmployee = () => {
+function addEmployee() {
   console.log("==========Add an Employee==========");
 
   const roleList = Role.findAll({ raw: true });
@@ -252,7 +256,7 @@ addEmployee = () => {
     });
 };
 
-updateEmployeeRole = () => {
+function updateEmployeeRole() {
   console.log("==========Update an Employee Role==========");
   const employeeList = Employee.findAll({raw:true})
   const employeeName = [];
@@ -303,7 +307,7 @@ updateEmployeeRole = () => {
   });
 };
 
-updateEmployeeManager = () => {
+function updateEmployeeManager() {
   console.log("==========Update Employee Manager==========");
 
   const employeeList = Employee.findAll({raw:true})
@@ -355,7 +359,7 @@ updateEmployeeManager = () => {
 
 };
 
-employeeByManager = () => {
+function employeeByManager() {
   console.log("==========View Employee by Manager==========");
   db.query(function (err, rows) {
     if (err) throw err;
@@ -364,7 +368,7 @@ employeeByManager = () => {
   });
 };
 
-deleteDepartment = () => {
+function deleteDepartment() {
   console.log("==========Delete Deparment==========");
   app.delete("/api/department/:department_id", (req, res) => {
     const sql = `DELETE FROM movies WHERE department_id = ?`;
@@ -388,7 +392,7 @@ deleteDepartment = () => {
   });
 };
 
-deleteRole = () => {
+function deleteRole() {
   console.log("==========Delete Role==========");
   app.delete("/api/department/:role_id", (req, res) => {
     const sql = `DELETE FROM movies WHERE role_id = ?`;
@@ -412,7 +416,7 @@ deleteRole = () => {
   });
 };
 
-deleteEmployeeRecord = () => {
+function deleteEmployeeRecord() {
   console.log("==========Delete Employee Record==========");
   app.delete("/api/department/:employee_id", (req, res) => {
     const sql = `DELETE FROM movies WHERE employee_id = ?`;
@@ -436,7 +440,7 @@ deleteEmployeeRecord = () => {
   });
 };
 
-viewDepartmentBudget = () => {
+function viewDepartmentBudget() {
   console.log("==========View Deparment Budget==========");
   const departmentList = Department.findAll({ raw: true });
   const department = [];
@@ -476,6 +480,6 @@ viewDepartmentBudget = () => {
 
 };
 
-endSession = () => {
+function endSession() {
   console.log("==========Session Ended==========");
 };

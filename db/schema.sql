@@ -16,14 +16,6 @@ CREATE TABLE roles (
     FOREIGN KEY (department_id) REFERENCES department(department_id)
 );
 
-CREATE TABLE orgchart (
-    managerflag BOOLEAN,
-    manager_firstname VARCHAR(50) NOT NULL,
-    manager_lastname VARCHAR(50) NOT NULL,
-    employee_id INT(5),
-    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
-);
-
 CREATE TABLE employees (
     employee_id INT(5) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employee_firstname VARCHAR(50) NOT NULL,
@@ -33,4 +25,12 @@ CREATE TABLE employees (
     manager_id INT(5),
     FOREIGN KEY (manager_id) REFERENCES orgchart(employee_id)
 
+);
+
+CREATE TABLE orgchart (
+    managerflag BOOLEAN,
+    manager_firstname VARCHAR(50) NOT NULL,
+    manager_lastname VARCHAR(50) NOT NULL,
+    employee_id INT(5),
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
