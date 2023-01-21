@@ -1,194 +1,131 @@
 // Import and require mysql2
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 const inquirer = require("inquirer");
-// const table = require("console.table");
-// const sequelize = require("sequelize");
-const express = require("express");
-const app = express();
-const { Department, Role, Employee, Orgchart } = require("./models");
-const { init } = require("./models/employee");
-const { response } = require("express");
-// const { init } = require("./models/employee");
-
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 // Connect to database
-const db = mysql.createConnection(
-  {
-    host: "127.0.0.1",
-    // MySQL username,
-    user: "root",
-    // TODO: Add MySQL password here
-    password: "",
-    database: "company_db",
-  },
-  console.log(`Connected to the company_db database.`)
-);
+const db = mysql.createConnection({
+  host: "127.0.0.1",
+  // MySQL username,
+  user: "root",
+  // TODO: Add MySQL password here
+  password: "password",
+  database: "company_db",
+});
 
-manageEmployees();
+function init() {
+  manageEmployees();
+}
 
-let departmentList = db.query(
-  "SELECT * FROM departments",
-  function (err, results) {
-    console.table(results);
+async function manageEmployees() {
+  const connection = await db;
+  const response = await inquirer.prompt([
+    {
+      type: "list",
+      name: "action",
+      message: "Manage Employee Database",
+      choices: [
+        "View All Departments",
+        "View All Roles",
+        "View All Employees",
+        "Add a Department",
+        "Add a Role",
+        "Add an Employee",
+        "Update an Employee Role",
+        "Update Employee Manager",
+        "View Employee by Manager",
+        "Delete Deparment",
+        "Delete Role",
+        "Delete Employee Record",
+        //   "View Deparment Budget",
+        "End Session",
+      ],
+    },
+  ]);
+  console.log(response);
+
+  if (response.action === "View All Departments") {
+    viewDepartmens(connection);
+  } else if (response.action === "View All Roles") {
+    viewRoles(connection);
+  } else if (response.action === "View All Employees") {
+    viewEmployees(connection);
+  } else if (response.action === "Add a Department") {
+    addDepartment(connection);
+  } else if (response.action === "Add a Role") {
+    addRole(connection);
+  } else if (response.action === "Add an Employee") {
+    addEmployee(connection);
+  } else if (response.action === "Update an Employee Role") {
+    updateEmployeeRole(connection);
+  } else if (response.action === "Update Employee Manager") {
+    updateEmployeeManager(connection);
+  } else if (response.action === "View Employee by Manager") {
+    employeeByManager(connection);
+  } else if (response.action === "Delete Deparment") {
+    deleteDepartment(connection);
+  } else if (response.action === "Delete Role") {
+    deleteRole(connection);
+  } else if (response.action === "Delete Employee Record") {
+    deleteEmployeeRecord(connection);
   }
-);
-
-let roleList = db.query("SELECT * FROM roles", function (err, results) {
-  console.table(results);
-});
-
-let employeeList = db.query("SELECT * FROM employees", function (err, results) {
-  console.table(results);
-});
-
-function manageEmployees() {
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "action",
-        message: "Manage Employee Database",
-        choices: [
-          "View All Departments",
-          "View All Roles",
-          "View All Employees",
-          "Add a Department",
-          "Add a Role",
-          "Add an Employee",
-          "Update an Employee Role",
-          "Update Employee Manager",
-          "View Employee by Manager",
-          "Delete Deparment",
-          "Delete Role",
-          "Delete Employee Record",
-          //   "View Deparment Budget",
-          "End Session",
-        ],
-      },
-    ])
-
-    .then((response) => {
-      console.log(response);
-
-      if (response.action === "View All Departments") {
-        viewDepartmens();
-      }
-      if (response === "View All Roles") {
-        viewRoles();
-      }
-      if (response === "View All Employees") {
-        viewEmployees();
-      }
-      if (response === "Add a Department") {
-        addDepartment();
-      }
-      if (response === "Add a Role") {
-        addRole();
-      }
-      if (response === "Add an Employee") {
-        addEmployee();
-      }
-      if (response === "Update an Employee Role") {
-        updateEmployeeRole();
-      }
-      if (response === "Update Employee Manager") {
-        updateEmployeeManager();
-      }
-      if (response === "View Employee by Manager") {
-        employeeByManager();
-      }
-      if (response === "Delete Deparment") {
-        deleteDepartment();
-      }
-      if (response === "Delete Role") {
-        deleteRole();
-      }
-      if (response === "Delete Employee Record") {
-        deleteEmployeeRecord();
-      }
-      //   if (response === "View Deparment Budget") {
-      //     viewDepartmentBudget();
-      //   }
-      else {
-        endSession();
-      }
-    });
+  //   if (response === "View Deparment Budget") {
+  //     viewDepartmentBudget();
+  //   }
+  else {
+    endSession();
+  }
 }
 
-async function viewDepartmens() {
+async function viewDepartmens(connection) {
   console.log("==========View All Departments==========");
-  db.query(
-    "SELECT * FROM departments",
-    await function (err, results) {
-      console.table(results);
-    }
-  );
+  const [results] = await connection.query("SELECT * FROM departments");
+  console.table(results);
   init();
 }
 
-async function viewRoles() {
+async function viewRoles(connection) {
   console.log("==========View All Roles==========");
-  db.query(
-    "SELECT * FROM roles",
-    await function (err, results) {
-      console.table(results);
-    }
-  );
+  const [results] = await connection.query("SELECT * FROM roles");
+  console.table(results);
   init();
 }
 
-async function viewEmployees() {
+async function viewEmployees(connection) {
   console.log("==========View All Employees==========");
-  db.query(
-    "SELECT * FROM employees",
-    await function (err, results) {
-      console.table(results);
-    }
-  );
+  const [results] = await connection.query("SELECT * FROM employees");
+  console.table(results);
   init();
 }
 
-async function addDepartment() {
+async function addDepartment(connection) {
   console.log("==========Add a Department==========");
   // db.query(
   //   "SELECT * FROM departments",
   //   await function (err, departmentList) {}
   // );
-  const newDepartment = await inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "department_name",
-        message: "Which department would you like to add?",
-      },
-    ])
-    .then((response) => {
-      let addedDepartment = response;
-      console.log(addedDepartment);
-
-      db.query(
-        `INSERT INTO departments (department_name) VALUES ${addedDepartment.department_name}`,
-        addedDepartment,
-        (err, result) => {
-          if (err) {
-            console.log(err);
-          }
-          console.log(result);
-        }
-      );
-    });
+  const newDepartment = await inquirer.prompt([
+    {
+      type: "input",
+      name: "department_name",
+      message: "Which department would you like to add?",
+    },
+  ]);
+  const [results] = await connection.query(
+    `INSERT INTO departments (department_name) VALUES ${department_name}`
+  );
+  console.table(results);
   init();
 }
 
-async function addRole() {
+async function addRole(connection) {
   console.log("==========Add a Role==========");
   // db.query(
   //   "SELECT * FROM roles",
   //   await function (err, rolesList) {}
   // );
+  const [departments] = await connection.query("SELECT * FROM departments");
+  departmentList = [];
+
   const newRole = await inquirer
     .prompt([
       {
@@ -226,7 +163,7 @@ async function addRole() {
   init();
 }
 
-async function addEmployee() {
+async function addEmployee(connection) {
   console.log("==========Add an Employee==========");
   // db.query(
   //   "SELECT * FROM employees",
@@ -402,55 +339,57 @@ async function deleteDepartment() {
 async function deleteRole() {
   console.log("==========Delete Role==========");
   const searchRoles = await inquirer
-  .prompt([
-    {
-      type: "list",
-      name: "role",
-      message: "Which role would you like to delete?",
-      choices: roleList,
-    },
-  ])
-  .then((response) => {
-    db.query(
-      `DELETE FROM roles WHERE role_id = ?`,
-      response,
-      (err, result) => {
-        if (err) {
-          console.log(err);
+    .prompt([
+      {
+        type: "list",
+        name: "role",
+        message: "Which role would you like to delete?",
+        choices: roleList,
+      },
+    ])
+    .then((response) => {
+      db.query(
+        `DELETE FROM roles WHERE role_id = ?`,
+        response,
+        (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          console.log(result);
         }
-        console.log(result);
-      }
-    );
-  });
-init();
+      );
+    });
+  init();
 }
 
 async function deleteEmployeeRecord() {
   console.log("==========Delete Employee Record==========");
   const searchEmployees = await inquirer
-  .prompt([
-    {
-      type: "list",
-      name: "employee",
-      message: "Which employee record would you like to delete?",
-      choices: employeeList,
-    },
-  ])
-  .then((response) => {
-    db.query(
-      `DELETE FROM employees WHERE employee_id = ?`,
-      response,
-      (err, result) => {
-        if (err) {
-          console.log(err);
+    .prompt([
+      {
+        type: "list",
+        name: "employee",
+        message: "Which employee record would you like to delete?",
+        choices: employeeList,
+      },
+    ])
+    .then((response) => {
+      db.query(
+        `DELETE FROM employees WHERE employee_id = ?`,
+        response,
+        (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          console.log(result);
         }
-        console.log(result);
-      }
-    );
-  });
-init();
+      );
+    });
+  init();
 }
 
 function endSession() {
   console.log("==========Session Ended==========");
 }
+
+init();
