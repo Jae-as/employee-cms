@@ -111,9 +111,9 @@ async function addDepartment(connection) {
     },
   ]);
   const [results] = await connection.query(
-    `INSERT INTO departments (department_name) VALUES ${department_name}`
+    "INSERT INTO departments (department_name) VALUES(?)", newDepartment.department_name
   );
-  console.table(results);
+  console.log("You have successfully added Department");
   init();
 }
 
@@ -124,7 +124,12 @@ async function addRole(connection) {
   //   await function (err, rolesList) {}
   // );
   const [departments] = await connection.query("SELECT * FROM departments");
+  // console.log(departments);
   departmentList = [];
+  for ( let i = 0; i < departments.length; i++ ){
+    departmentList.push({name: departments[i].department_name, value: departments[i].department_id})
+  }
+console.log(departmentList);
 
   const newRole = await inquirer
     .prompt([
@@ -140,26 +145,17 @@ async function addRole(connection) {
       },
       {
         type: "list",
-        name: "department_name",
+        name: "department_id",
         message: "Which department is this role associated with?",
         choices: departmentList,
       },
     ])
-    .then((response) => {
-      let addedRole = response;
-      console.log(addedRole);
-
-      db.query(
-        `INSERT INTO roles (title, salary, department_id) VALUES ${addedRole.title}, ${addedRole.salary}, ${addedRole.department_name}`,
-        addedRole,
-        (err, result) => {
-          if (err) {
-            console.log(err);
-          }
-          console.log(result);
-        }
+    // .then((addedRole) => {
+    //   console.log(addedRole);
+    const [results] = await connection.query(
+        "INSERT INTO roles (title, salary, department_id) VALUES(?, ?, ?)", [newRole.title, newRole.salary, newRole.department_id]
       );
-    });
+      console.log("You have successfully added a new role!")
   init();
 }
 
