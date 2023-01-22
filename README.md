@@ -3,10 +3,11 @@ Week 12, Employee Content Management System with MySQL, Inquirer and Node.JS
 
 ## Table of Contents
 1. [Description](#Description)
-2. [Feature](#Feature)
-3. [Mockup](#Mockup)
-4. [Recorded Video](#Recorded-Video)
-5. [Questions](#Questions)
+2. [User-Stories](#User-Stories)
+3. [Acceptance-Criteria](#Acceptance-Criteria)
+4. [Mockup](#Mockup)
+5. [Recorded Video](#Recorded-Video)
+6. [Questions](#Questions)
 
 # Description
 ***
