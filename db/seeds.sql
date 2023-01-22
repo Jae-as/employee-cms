@@ -27,26 +27,10 @@ VALUES
 ('Finance Manager', 101, 280000, 0006),
 ('Finance Analyst', 111, 120000, 0006),
 ('General Council', 005, 350000, 0007),
-('Chief Technology/Digital Officer', 004, 1200000, 0006),
+('Chief Technology Officer', 004, 1200000, 0006),
 ('Chief Financial Office', 003, 1500000, 0006),
 ('Chief Operations Officer', 002, 2000000, 0006),
 ('Chief Executive Officer', 001, 2500000, 0006);
-
--- INSERT INTO orgchart (managerflag, manager_firstname, manager_lastname, employee_id)
--- VALUES
--- ('Ariel', 'Munroe', 00001)
--- ('Sasha', 'Morley', 00002)
--- ('Steve', "Patton", 00003)
--- ('Matthew', 'Forbes', 00004)
--- ('James', 'Brown', 00005)
--- ('Christina', 'Wilberforce', 00006)
--- ('Simone', 'Alexander', 00007)
--- ('Ashley', 'Smith', 00008)
--- ('Bejamin', 'Larson', 00009)
--- ('Meredy', 'Aitken', 00010)
--- ('Tim', 'Song', 00011)
--- ('Peter', 'King', 00012)
--- ('Julia', 'Saunders', 00013)
 
 INSERT INTO employees (employee_firstname, employee_lastname, employee_id, role_id, manager_id)
 VALUES
